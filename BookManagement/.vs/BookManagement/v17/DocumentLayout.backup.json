@@ -1,0 +1,213 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0CDB1281-15D2-401C-BF7A-A1284E9987CF}|..\\BM.BLL\\BookManagement.BLL.csproj|c:\\users\\hungt\\desktop\\sql\u5927\u4F5C\u4E1A\\bm.bll\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F10AA4E9-6B9B-458B-ACB1-9124436F6A1A}|..\\BM.DAL\\BookManagement.DAL.csproj|c:\\users\\hungt\\desktop\\sql\u5927\u4F5C\u4E1A\\bm.dal\\utility\\sqlhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A619DA22-15C7-428A-96D6-026257C36481}|BookManagement.csproj|C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\forms\\frmborrowrecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A619DA22-15C7-428A-96D6-026257C36481}|BookManagement.csproj|solutionrelative:forms\\frmborrowrecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A619DA22-15C7-428A-96D6-026257C36481}|BookManagement.csproj|C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\forms\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A619DA22-15C7-428A-96D6-026257C36481}|BookManagement.csproj|solutionrelative:forms\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A619DA22-15C7-428A-96D6-026257C36481}|BookManagement.csproj|C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\forms\\frmreadercategorymanage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A619DA22-15C7-428A-96D6-026257C36481}|BookManagement.csproj|solutionrelative:forms\\frmreadercategorymanage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A619DA22-15C7-428A-96D6-026257C36481}|BookManagement.csproj|C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\forms\\frmreadermanage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A619DA22-15C7-428A-96D6-026257C36481}|BookManagement.csproj|solutionrelative:forms\\frmreadermanage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A619DA22-15C7-428A-96D6-026257C36481}|BookManagement.csproj|c:\\users\\hungt\\desktop\\sql\u5927\u4F5C\u4E1A\\bookmanagement\\forms\\frmborrowrecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A619DA22-15C7-428A-96D6-026257C36481}|BookManagement.csproj|solutionrelative:forms\\frmborrowrecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F10AA4E9-6B9B-458B-ACB1-9124436F6A1A}|..\\BM.DAL\\BookManagement.DAL.csproj|c:\\users\\hungt\\desktop\\sql\u5927\u4F5C\u4E1A\\bm.dal\\bookservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F10AA4E9-6B9B-458B-ACB1-9124436F6A1A}|..\\BM.DAL\\BookManagement.DAL.csproj|c:\\users\\hungt\\desktop\\sql\u5927\u4F5C\u4E1A\\bm.dal\\borrowservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CDB1281-15D2-401C-BF7A-A1284E9987CF}|..\\BM.BLL\\BookManagement.BLL.csproj|c:\\users\\hungt\\desktop\\sql\u5927\u4F5C\u4E1A\\bm.bll\\borrowmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CDB1281-15D2-401C-BF7A-A1284E9987CF}|..\\BM.BLL\\BookManagement.BLL.csproj|c:\\users\\hungt\\desktop\\sql\u5927\u4F5C\u4E1A\\bm.bll\\bookmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A619DA22-15C7-428A-96D6-026257C36481}|BookManagement.csproj|c:\\users\\hungt\\desktop\\sql\u5927\u4F5C\u4E1A\\bookmanagement\\forms\\frmborrowrecord.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A619DA22-15C7-428A-96D6-026257C36481}|BookManagement.csproj|solutionrelative:forms\\frmborrowrecord.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SQLHelper.cs",
+              "DocumentMoniker": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BM.DAL\\Utility\\SQLHelper.cs",
+              "RelativeDocumentMoniker": "..\\BM.DAL\\Utility\\SQLHelper.cs",
+              "ToolTip": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BM.DAL\\Utility\\SQLHelper.cs",
+              "RelativeToolTip": "..\\BM.DAL\\Utility\\SQLHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-20T03:46:33.406Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "app.config",
+              "DocumentMoniker": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BM.BLL\\app.config",
+              "RelativeDocumentMoniker": "..\\BM.BLL\\app.config",
+              "ToolTip": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BM.BLL\\app.config",
+              "RelativeToolTip": "..\\BM.BLL\\app.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-12-20T03:46:10.546Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FrmLogin.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\Forms\\FrmLogin.cs",
+              "RelativeDocumentMoniker": "Forms\\FrmLogin.cs",
+              "ToolTip": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\Forms\\FrmLogin.cs [Design]",
+              "RelativeToolTip": "Forms\\FrmLogin.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T14:33:36.436Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "FrmReaderManage.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\Forms\\FrmReaderManage.cs",
+              "RelativeDocumentMoniker": "Forms\\FrmReaderManage.cs",
+              "ToolTip": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\Forms\\FrmReaderManage.cs [Design]",
+              "RelativeToolTip": "Forms\\FrmReaderManage.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T14:30:28.83Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "BookService.cs",
+              "DocumentMoniker": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BM.DAL\\BookService.cs",
+              "RelativeDocumentMoniker": "..\\BM.DAL\\BookService.cs",
+              "ToolTip": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BM.DAL\\BookService.cs",
+              "RelativeToolTip": "..\\BM.DAL\\BookService.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAjwBgAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T13:33:59.146Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "BorrowManager.cs",
+              "DocumentMoniker": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BM.BLL\\BorrowManager.cs",
+              "RelativeDocumentMoniker": "..\\BM.BLL\\BorrowManager.cs",
+              "ToolTip": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BM.BLL\\BorrowManager.cs",
+              "RelativeToolTip": "..\\BM.BLL\\BorrowManager.cs",
+              "ViewState": "AgIAAFkAAAAAAAAAAADgv2cAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T13:31:18.97Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FrmBorrowRecord.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\Forms\\FrmBorrowRecord.cs",
+              "RelativeDocumentMoniker": "Forms\\FrmBorrowRecord.cs",
+              "ToolTip": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\Forms\\FrmBorrowRecord.cs [Design]",
+              "RelativeToolTip": "Forms\\FrmBorrowRecord.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T13:03:32.937Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Bookmanager.cs",
+              "DocumentMoniker": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BM.BLL\\Bookmanager.cs",
+              "RelativeDocumentMoniker": "..\\BM.BLL\\Bookmanager.cs",
+              "ToolTip": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BM.BLL\\Bookmanager.cs",
+              "RelativeToolTip": "..\\BM.BLL\\Bookmanager.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAtwBwAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T11:00:01.974Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "FrmBorrowRecord.cs",
+              "DocumentMoniker": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\Forms\\FrmBorrowRecord.cs",
+              "RelativeDocumentMoniker": "Forms\\FrmBorrowRecord.cs",
+              "ToolTip": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\Forms\\FrmBorrowRecord.cs",
+              "RelativeToolTip": "Forms\\FrmBorrowRecord.cs",
+              "ViewState": "AgIAAHgAAAAAAAAAAAAIwJ4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T10:03:30.815Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "BorrowService.cs",
+              "DocumentMoniker": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BM.DAL\\BorrowService.cs",
+              "RelativeDocumentMoniker": "..\\BM.DAL\\BorrowService.cs",
+              "ToolTip": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BM.DAL\\BorrowService.cs",
+              "RelativeToolTip": "..\\BM.DAL\\BorrowService.cs",
+              "ViewState": "AgIAALgAAAAAAAAAAAAhwNIAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T14:53:47.959Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FrmReaderCategoryManage.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\Forms\\FrmReaderCategoryManage.cs",
+              "RelativeDocumentMoniker": "Forms\\FrmReaderCategoryManage.cs",
+              "ToolTip": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\Forms\\FrmReaderCategoryManage.cs [Design]",
+              "RelativeToolTip": "Forms\\FrmReaderCategoryManage.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T08:31:11.161Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "FrmBorrowRecord.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\Forms\\FrmBorrowRecord.Designer.cs",
+              "RelativeDocumentMoniker": "Forms\\FrmBorrowRecord.Designer.cs",
+              "ToolTip": "C:\\Users\\hungt\\Desktop\\SQL\u5927\u4F5C\u4E1A\\BookManagement\\Forms\\FrmBorrowRecord.Designer.cs",
+              "RelativeToolTip": "Forms\\FrmBorrowRecord.Designer.cs",
+              "ViewState": "AgIAAGoBAAAAAAAAAAAnwHIBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T10:04:18.726Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

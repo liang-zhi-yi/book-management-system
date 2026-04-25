@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书管理系统 - 登录/注册</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <!-- 系统Logo -->
+        <div class="logo-container">
+            <div class="logo">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h1>图书管理系统</h1>
+        </div>
+        
+        <!-- 登录/注册切换 -->
+        <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchTab('login')">登录</button>
+            <button class="auth-tab" onclick="switchTab('register')">注册</button>
+        </div>
+        
+        <!-- 登录表单 -->
+        <form id="loginForm" class="auth-form active">
+            <div class="form-group">
+                <div class="input-with-icon">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="userName" placeholder="请输入用户名" value="admin" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="请输入密码" value="123456" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-with-icon">
+                    <i class="fas fa-user-tag"></i>
+                    <select id="userType">
+                        <option value="0" selected>系统管理员</option>
+                        <option value="1">读者</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn-auth">
+                <i class="fas fa-sign-in-alt"></i> 登录
+            </button>
+            <div class="auth-footer">
+                <span>没有账号？</span>
+                <a href="#" onclick="switchTab('register')">点击注册</a>
+            </div>
+        </form>
+        
+        <!-- 注册表单 -->
+        <form id="registerForm" class="auth-form">
+            <div class="form-group">
+                <div class="input-with-icon">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="regUserName" placeholder="请输入用户名" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-with-icon">
+                    <i class="fas fa-user-tag"></i>
+                    <select id="regIdentity">
+                        <option value="student" selected>学生</option>
+                        <option value="teacher">教师</option>
+                        <option value="staff">职工</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-with-icon">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="regPhone" placeholder="请输入手机号" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="regPassword" placeholder="请输入密码" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="regConfirmPassword" placeholder="请确认密码" required>
+                </div>
+            </div>
+            <button type="submit" class="btn-auth">
+                <i class="fas fa-user-plus"></i> 注册
+            </button>
+            <div class="auth-footer">
+                <span>已有账号？</span>
+                <a href="#" onclick="switchTab('login')">点击登录</a>
+            </div>
+        </form>
+        
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            // 切换标签
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.auth-tab[onclick="switchTab('${tab}')"]`).classList.add('active');
+            
+            // 切换表单
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById(`${tab}Form`).classList.add('active');
+            
+            // 清空消息
+            document.getElementById('message').textContent = '';
+            document.getElementById('message').className = 'message';
+        }
+        
+        // 登录表单提交
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userName = document.getElementById('userName').value.trim();
+            const password = document.getElementById('password').value;
+            const userType = document.getElementById('userType').value;
+
+            try {
+                // 正常登录
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({user_name: userName, password, user_type: parseInt(userType)})
+                });
+                const result = await response.json();
+                const messageDiv = document.getElementById('message');
+
+                if (result.success) {
+                    messageDiv.className = 'message success';
+                    messageDiv.textContent = result.message;
+                    // 保存用户信息到 sessionStorage
+                    sessionStorage.setItem('user', JSON.stringify({
+                        user_id: result.user_id,
+                        user_name: userName,
+                        real_name: userName,
+                        user_type: parseInt(userType)
+                    }));
+                    setTimeout(() => {
+                        // 根据返回的跳转路径跳转
+                        window.location.href = result.redirect_url || '/';
+                    }, 1000);
+                } else {
+                    messageDiv.className = 'message error';
+                    messageDiv.textContent = result.message;
+                }
+            } catch (error) {
+                document.getElementById('message').className = 'message error';
+                document.getElementById('message').textContent = '请求失败：' + error.message;
+            }
+        });
+        
+        // 注册表单提交
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user_name = document.getElementById('regUserName').value.trim();
+            const identity = document.getElementById('regIdentity').value;
+            const phone = document.getElementById('regPhone').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            
+            // 验证密码
+            if (password !== confirmPassword) {
+                document.getElementById('message').className = 'message error';
+                document.getElementById('message').textContent = '两次输入的密码不一致';
+                return;
+            }
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({user_name, identity, phone, password})
+                });
+                const result = await response.json();
+                const messageDiv = document.getElementById('message');
+
+                if (result.success) {
+                    messageDiv.className = 'message success';
+                    messageDiv.textContent = result.message;
+                    setTimeout(() => {
+                        switchTab('login');
+                    }, 1000);
+                } else {
+                    messageDiv.className = 'message error';
+                    messageDiv.textContent = result.message;
+                }
+            } catch (error) {
+                document.getElementById('message').className = 'message error';
+                document.getElementById('message').textContent = '请求失败：' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

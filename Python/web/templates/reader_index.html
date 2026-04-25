@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书管理系统 - 读者端</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-book"></i> 图书管理系统</h1>
+            <div class="user-info">
+                <div class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span id="currentUser"></span>
+                </div>
+                <a href="/logout" class="btn-logout"><i class="fas fa-sign-out-alt"></i> 退出</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content-grid">
+            <div class="sidebar reader-sidebar">
+                <button class="menu-btn active" data-page="myBorrows"><i class="fas fa-history"></i> 我的借阅记录</button>
+                <button class="menu-btn" data-page="bookBrowse"><i class="fas fa-search"></i> 图书浏览与搜索</button>
+                <button class="menu-btn" data-page="borrowApply"><i class="fas fa-hand-holding"></i> 在线借阅申请</button>
+                <button class="menu-btn" data-page="personalInfo"><i class="fas fa-user"></i> 个人信息管理</button>
+            </div>
+
+            <div class="main-content">
+                <div id="page-myBorrows" class="page">
+                    <h2><i class="fas fa-history"></i> 我的借阅记录</h2>
+                    <!-- 逾期提示横幅 -->
+                    <div id="overdue-alert" class="overdue-alert" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>您有 <strong id="overdue-count">0</strong> 本图书已逾期，请尽快归还</span>
+                    </div>
+                    <!-- 筛选栏 -->
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <label>状态筛选:</label>
+                            <select id="status-filter">
+                                <option value="all">全部</option>
+                                <option value="borrowed">已借</option>
+                                <option value="returned">已还</option>
+                                <option value="overdue">逾期</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>时间范围:</label>
+                            <input type="date" id="start-date">
+                            <span>至</span>
+                            <input type="date" id="end-date">
+                        </div>
+                        <div class="search-group">
+                            <input type="text" id="reader-borrow-search" placeholder="搜索图书名称或ISBN">
+                            <button onclick="searchMyBorrows()" class="btn-search"><i class="fas fa-search"></i> 查询</button>
+                            <button onclick="loadMyBorrows()" class="btn-refresh"><i class="fas fa-sync-alt"></i> 刷新</button>
+                        </div>
+                    </div>
+                    <!-- 已还记录归档控制 -->
+                    <div class="archive-control">
+                        <button id="toggle-archive" onclick="toggleArchive()" class="btn-archive">
+                            <i class="fas fa-chevron-down"></i> 展开已还记录
+                        </button>
+                    </div>
+                    <div class="borrow-record-card">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>图书名称</th>
+                                    <th>ISBN</th>
+                                    <th>借阅日期</th>
+                                    <th>应还日期</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reader-borrow-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="page-bookBrowse" class="page" style="display:none;">
+                    <h2><i class="fas fa-search"></i> 图书浏览与搜索</h2>
+                    <!-- 搜索与筛选区 -->
+                    <div class="search-filter-bar">
+                        <div class="search-group">
+                            <input type="text" id="reader-book-search" placeholder="搜索书名/作者/出版社">
+                            <select id="reader-book-category"></select>
+                            <select id="reader-book-sort">
+                                <option value="borrow_count">按借阅量</option>
+                                <option value="publish_date">按出版日期</option>
+                                <option value="add_date">按上架时间</option>
+                            </select>
+                            <button onclick="searchBooksForReader()" class="btn-search"><i class="fas fa-search"></i> 搜索</button>
+                            <button onclick="loadBooksForReader()" class="btn-refresh"><i class="fas fa-sync-alt"></i> 刷新</button>
+                        </div>
+                        <!-- 视图切换 -->
+                        <div class="view-toggle">
+                            <button id="grid-view-btn" class="view-btn active" onclick="switchView('grid')"><i class="fas fa-th"></i> 网格视图</button>
+                            <button id="list-view-btn" class="view-btn" onclick="switchView('list')"><i class="fas fa-list"></i> 列表视图</button>
+                        </div>
+                    </div>
+                    <!-- 图书展示区 -->
+                    <div class="book-display-container">
+                        <div id="reader-book-grid" class="book-grid-container"></div>
+                        <div id="reader-book-list" class="book-list-container" style="display:none;"></div>
+                    </div>
+                    <!-- 分页控件 -->
+                    <div class="pagination" id="book-pagination">
+                        <button onclick="changePage(-1)" class="btn-page" id="prev-page" disabled><i class="fas fa-chevron-left"></i> 上一页</button>
+                        <span class="page-info">第 <span id="current-page">1</span> 页，共 <span id="total-pages">1</span> 页</span>
+                        <button onclick="changePage(1)" class="btn-page" id="next-page"><i class="fas fa-chevron-right"></i> 下一页</button>
+                    </div>
+                </div>
+
+                <div id="page-borrowApply" class="page" style="display:none;">
+                    <h2><i class="fas fa-hand-holding"></i> 在线借阅申请</h2>
+                    
+                    <!-- 步骤条 -->
+                    <div class="step-container">
+                        <div class="step active" id="step-1">
+                            <div class="step-number">1</div>
+                            <div class="step-title">选择图书</div>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step" id="step-2">
+                            <div class="step-number">2</div>
+                            <div class="step-title">确认借阅信息</div>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step" id="step-3">
+                            <div class="step-number">3</div>
+                            <div class="step-title">提交申请</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 步骤内容 -->
+                    <div class="borrow-apply-card">
+                        <!-- 第一步：选择图书 -->
+                        <div id="step-1-content" class="step-content">
+                            <div class="search-section">
+                                <h3>选择图书</h3>
+                                <div class="search-controls">
+                                    <input type="text" id="apply-book-search" placeholder="搜索书名或ISBN">
+                                    <select id="apply-book-category"></select>
+                                    <button onclick="searchBooksForApply()">
+                                        <i class="fas fa-search"></i> 搜索
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="apply-book-grid" style="display: grid !important; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; gap: 20px !important; align-items: start !important;"></div>
+                            <!-- 分页控件 -->
+                            <div class="pagination" id="apply-book-pagination">
+                                <button onclick="changeApplyPage(-1)" class="btn-page" id="apply-prev-page" disabled><i class="fas fa-chevron-left"></i> 上一页</button>
+                                <span class="page-info">第 <span id="apply-current-page">1</span> 页，共 <span id="apply-total-pages">1</span> 页</span>
+                                <button onclick="changeApplyPage(1)" class="btn-page" id="apply-next-page"><i class="fas fa-chevron-right"></i> 下一页</button>
+                            </div>
+                            <div class="step-navigation">
+                                <div></div>
+                                <button id="next-to-step-2" disabled onclick="goToStep(2)" class="btn-primary">
+                                    <i class="fas fa-arrow-right"></i> 下一步
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 第二步：确认借阅信息 -->
+                        <div id="step-2-content" class="step-content" style="display:none;">
+                            <h3>确认借阅信息</h3>
+                            <div class="info-card">
+                                <h4>读者信息</h4>
+                                <div id="apply-reader-info">
+                                    <p>读者ID: <span id="apply-reader-id">-</span></p>
+                                    <p>姓名: <span id="apply-reader-name">-</span></p>
+                                    <p>类别: <span id="apply-reader-category">-</span></p>
+                                    <p>剩余可借数量: <span id="apply-reader-remaining">-</span></p>
+                                </div>
+                            </div>
+                            <div class="info-card">
+                                <h4>已选图书</h4>
+                                <div id="selected-books-list"></div>
+                            </div>
+                            <div class="info-card">
+                                <h4>借阅详情</h4>
+                                <div>
+                                    <p>借阅日期: <input type="date" id="apply-borrow-date" class="date-input"></p>
+                                    <p>应还日期: <input type="date" id="apply-borrow-due-date" class="date-input"></p>
+                                </div>
+                            </div>
+                            <div class="step-navigation">
+                                <button onclick="goToStep(1)" class="btn-secondary">
+                                    <i class="fas fa-arrow-left"></i> 返回上一步
+                                </button>
+                                <button id="next-to-step-3" disabled onclick="goToStep(3)" class="btn-primary">
+                                    <i class="fas fa-arrow-right"></i> 下一步
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 第三步：提交申请 -->
+                        <div id="step-3-content" class="step-content" style="display:none;">
+                            <h3>提交申请</h3>
+                            <div class="info-card">
+                                <h4>申请信息确认</h4>
+                                <div id="final-application-info"></div>
+                            </div>
+                            <div class="step-navigation">
+                                <button onclick="goToStep(2)" class="btn-secondary">
+                                    <i class="fas fa-arrow-left"></i> 返回上一步
+                                </button>
+                                <button id="submit-application-btn" onclick="submitApplication()" class="btn-primary">
+                                    <i class="fas fa-check"></i> 提交申请
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 申请记录 -->
+                    <div class="application-records">
+                        <h3><i class="fas fa-history"></i> 申请记录</h3>
+                        <div id="application-records-list"></div>
+                    </div>
+                </div>
+
+                <div id="page-personalInfo" class="page" style="display:none;">
+                    <h2><i class="fas fa-user"></i> 个人信息管理</h2>
+                    <div class="personal-info-layout" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                        <!-- 左侧：个人信息卡片 -->
+                        <div class="info-card">
+                            <h4>个人信息</h4>
+                            <div class="personal-profile" style="text-align: center; margin-bottom: 30px;">
+                                <div class="profile-avatar" style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #ffb69f 0%, #fcb69f 100%); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 48px; color: white;">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="profile-info" style="text-align: left; max-width: 300px; margin: 0 auto;">
+                                    <div style="margin: 10px 0; font-size: 14px; color: #8d6e63;">
+                                        <strong style="color: #5d4037;">读者ID:</strong>
+                                        <input type="text" id="personal-reader-id" value="-" style="margin-left: 10px; padding: 6px 10px; border: 2px solid rgba(255, 203, 173, 0.5); border-radius: 8px; font-size: 14px; background: rgba(245, 245, 245, 0.8); color: #5d4037; width: 180px; cursor: not-allowed;" readonly>
+                                    </div>
+                                    <div style="margin: 10px 0; font-size: 14px; color: #8d6e63;">
+                                        <strong style="color: #5d4037;">姓名:</strong>
+                                        <input type="text" id="personal-reader-name" value="-" style="margin-left: 10px; padding: 6px 10px; border: 2px solid rgba(255, 203, 173, 0.5); border-radius: 8px; font-size: 14px; background: rgba(245, 245, 245, 0.8); color: #5d4037; width: 180px; cursor: not-allowed;" readonly>
+                                    </div>
+                                    <div style="margin: 10px 0; font-size: 14px; color: #8d6e63;">
+                                        <strong style="color: #5d4037;">性别:</strong>
+                                        <select id="personal-reader-gender" disabled style="margin-left: 10px; padding: 6px 10px; border: 2px solid rgba(255, 203, 173, 0.5); border-radius: 8px; font-size: 14px; background: rgba(245, 245, 245, 0.8); color: #5d4037; width: 180px; cursor: not-allowed;">
+                                            <option value="">请选择</option>
+                                            <option value="男">男</option>
+                                            <option value="女">女</option>
+                                        </select>
+                                    </div>
+                                    <div style="margin: 10px 0; font-size: 14px; color: #8d6e63;">
+                                        <strong style="color: #5d4037;">类别:</strong>
+                                        <select id="personal-reader-category" disabled style="margin-left: 10px; padding: 6px 10px; border: 2px solid rgba(255, 203, 173, 0.5); border-radius: 8px; font-size: 14px; background: rgba(245, 245, 245, 0.8); color: #5d4037; width: 180px; cursor: not-allowed;">
+                                            <option value="">请选择</option>
+                                            <option value="学生">学生</option>
+                                            <option value="教师">教师</option>
+                                            <option value="职工">职工</option>
+                                        </select>
+                                    </div>
+                                    <p style="margin: 10px 0; font-size: 14px; color: #8d6e63;"><strong style="color: #5d4037;">可借数量上限:</strong> <span id="personal-reader-borrow-limit">10</span> 本</p>
+                                    <p style="margin: 10px 0; font-size: 14px; color: #8d6e63;"><strong style="color: #5d4037;">借阅期限:</strong> <span id="personal-reader-borrow-days">30</span> 天</p>
+                                    <p style="margin: 10px 0; font-size: 14px; color: #8d6e63;"><strong style="color: #5d4037;">注册日期:</strong> <span id="personal-reader-registration-date">-</span></p>
+                                    <p style="margin: 10px 0; font-size: 14px; color: #8d6e63;"><strong style="color: #5d4037;">状态:</strong> <span id="personal-reader-status">-</span></p>
+                                    <div style="margin: 10px 0; font-size: 14px; color: #8d6e63;">
+                                        <strong style="color: #5d4037;">联系电话:</strong>
+                                        <input type="text" id="personal-reader-phone" value="-" style="margin-left: 10px; padding: 6px 10px; border: 2px solid rgba(255, 203, 173, 0.5); border-radius: 8px; font-size: 14px; background: rgba(245, 245, 245, 0.8); color: #5d4037; width: 180px; cursor: not-allowed;" readonly>
+                                    </div>
+                                    <div style="margin: 10px 0; font-size: 14px; color: #8d6e63;">
+                                        <strong style="color: #5d4037;">邮箱:</strong>
+                                        <input type="text" id="personal-reader-email" value="-" style="margin-left: 10px; padding: 6px 10px; border: 2px solid rgba(255, 203, 173, 0.5); border-radius: 8px; font-size: 14px; background: rgba(245, 245, 245, 0.8); color: #5d4037; width: 180px; cursor: not-allowed;" readonly>
+                                    </div>
+                                    <div style="margin: 10px 0; font-size: 14px; color: #8d6e63;">
+                                        <strong style="color: #5d4037;">地址:</strong>
+                                        <input type="text" id="personal-reader-address" value="-" style="margin-left: 10px; padding: 6px 10px; border: 2px solid rgba(255, 203, 173, 0.5); border-radius: 8px; font-size: 14px; background: rgba(245, 245, 245, 0.8); color: #5d4037; width: 180px; cursor: not-allowed;" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="edit-info-btn" onclick="toggleEditMode()" class="btn-primary" style="width: 100%; margin-bottom: 15px;">
+                                <i class="fas fa-edit"></i> 修改信息
+                            </button>
+                            <div id="edit-section" style="display: none;">
+                                <div style="display: flex; gap: 10px;">
+                                    <button onclick="savePersonalInfo()" class="btn-primary" style="flex: 1;">
+                                        <i class="fas fa-save"></i> 保存
+                                    </button>
+                                    <button onclick="cancelEdit()" class="btn-secondary" style="flex: 1;">
+                                        <i class="fas fa-times"></i> 取消
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 右侧：密码修改卡片 -->
+                        <div class="info-card">
+                            <h4>密码修改</h4>
+                            <div class="form-row" style="flex-direction: column; align-items: stretch; gap: 15px;">
+                                <div style="display: flex; flex-direction: column; gap: 5px;">
+                                    <label style="font-size: 14px; color: #8d6e63; font-weight: 500;">旧密码</label>
+                                    <input type="password" id="old-password" placeholder="请输入旧密码" style="padding: 12px 16px; border: 2px solid rgba(255, 203, 173, 0.5); border-radius: 12px; font-size: 14px; transition: all 0.3s ease; background: rgba(255, 255, 255, 0.8); color: #5d4037;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 5px;">
+                                    <label style="font-size: 14px; color: #8d6e63; font-weight: 500;">新密码</label>
+                                    <input type="password" id="new-password" placeholder="请输入新密码" oninput="checkPasswordStrength()" style="padding: 12px 16px; border: 2px solid rgba(255, 203, 173, 0.5); border-radius: 12px; font-size: 14px; transition: all 0.3s ease; background: rgba(255, 255, 255, 0.8); color: #5d4037;">
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                                        <span style="font-size: 12px; color: #8d6e63; min-width: 60px;">密码强度:</span>
+                                        <div style="flex: 1; height: 8px; background: rgba(255, 203, 173, 0.3); border-radius: 4px; overflow: hidden;">
+                                            <div id="password-strength" style="height: 100%; width: 0%; background: linear-gradient(135deg, #ffb69f 0%, #fcb69f 100%); border-radius: 4px; transition: width 0.3s ease;"></div>
+                                        </div>
+                                        <span id="password-strength-text" style="font-size: 12px; color: #8d6e63;">弱</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 5px;">
+                                    <label style="font-size: 14px; color: #8d6e63; font-weight: 500;">确认密码</label>
+                                    <input type="password" id="confirm-password" placeholder="请再次输入新密码" style="padding: 12px 16px; border: 2px solid rgba(255, 203, 173, 0.5); border-radius: 12px; font-size: 14px; transition: all 0.3s ease; background: rgba(255, 255, 255, 0.8); color: #5d4037;">
+                                </div>
+                                <button onclick="changePassword()" class="btn-primary" style="width: 100%;">
+                                    <i class="fas fa-key"></i> 修改密码
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 借阅统计 -->
+                    <div class="info-card" style="margin-top: 20px;">
+                        <h4>借阅统计</h4>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value" id="total-borrows">0</div>
+                                <div class="stat-label">总借阅次数</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="current-borrows">0</div>
+                                <div class="stat-label">当前借阅</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="overdue-borrows">0</div>
+                                <div class="stat-label">逾期数量</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="total-fee">0</div>
+                                <div class="stat-label">总逾期费</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/reader_app.js"></script>
+    <script>
+        // 填充编辑表单的输入框
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('Inline script executed');
+            try {
+                console.log('Fetching readers API...');
+                const response = await fetch('/api/readers');
+                console.log('Response status:', response.status);
+                const result = await response.json();
+                console.log('API result:', result);
+                if (result.success && result.data && result.data.length > 0) {
+                    const reader = result.data[0];
+                    console.log('Reader object:', reader);
+                    if (reader) {
+                        // 填充个人信息编辑框
+                        const readerIdInput = document.getElementById('personal-reader-id');
+                        console.log('Reader ID input element:', readerIdInput);
+                        if (readerIdInput) {
+                            readerIdInput.value = reader.ReaderId || '';
+                            console.log('Set reader ID input to:', reader.ReaderId || '');
+                        }
+                        const readerNameInput = document.getElementById('personal-reader-name');
+                        console.log('Reader name input element:', readerNameInput);
+                        if (readerNameInput) {
+                            readerNameInput.value = reader.ReaderName || '';
+                            console.log('Set reader name input to:', reader.ReaderName || '');
+                        }
+                        const genderSelect = document.getElementById('personal-reader-gender');
+                        console.log('Gender select element:', genderSelect);
+                        if (genderSelect) {
+                            genderSelect.value = reader.Gender || '';
+                            console.log('Set gender select to:', reader.Gender || '');
+                        }
+                        const categorySelect = document.getElementById('personal-reader-category');
+                        console.log('Category select element:', categorySelect);
+                        if (categorySelect) {
+                            categorySelect.value = reader.CategoryName || '';
+                            console.log('Set category select to:', reader.CategoryName || '');
+                        }
+                        // 填充编辑表单
+                        const phoneInput = document.getElementById('personal-edit-phone');
+                        console.log('Phone input element:', phoneInput);
+                        if (phoneInput) {
+                            phoneInput.value = reader.Phone || '';
+                            console.log('Set phone input to:', reader.Phone || '');
+                        }
+                        const emailInput = document.getElementById('personal-edit-email');
+                        console.log('Email input element:', emailInput);
+                        if (emailInput) {
+                            emailInput.value = reader.Email || '';
+                            console.log('Set email input to:', reader.Email || '');
+                        }
+                        const addressInput = document.getElementById('personal-edit-address');
+                        console.log('Address input element:', addressInput);
+                        if (addressInput) {
+                            addressInput.value = reader.Address || '';
+                            console.log('Set address input to:', reader.Address || '');
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading personal info:', error);
+            }
+        });
+    </script>
+
+    <!-- 图书信息模态框 -->
+    <div id="book-info-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>图书详细信息</h3>
+                <span class="close" onclick="closeBookInfoModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="book-info-content">
+                    <div class="book-info-left">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
+                    </div>
+                    <div class="book-info-right">
+                        <h4 id="modal-book-name"></h4>
+                        <p><strong>ISBN:</strong> <span id="modal-book-isbn"></span></p>
+                        <p><strong>作者:</strong> <span id="modal-book-author"></span></p>
+                        <p><strong>出版社:</strong> <span id="modal-book-publisher"></span></p>
+                        <p><strong>类别:</strong> <span id="modal-book-category"></span></p>
+                        <p><strong>出版日期:</strong> <span id="modal-book-publish-date"></span></p>
+                        <p><strong>价格:</strong> <span id="modal-book-price"></span> 元</p>
+                        <p><strong>可借数量:</strong> <span id="modal-book-available"></span> / <span id="modal-book-total"></span></p>
+                        <div class="book-actions">
+                            <button class="btn-primary" onclick="selectBookForApply(document.getElementById('modal-book-id').value, document.getElementById('modal-book-name').textContent, document.getElementById('modal-book-isbn').textContent, document.getElementById('modal-book-category').textContent)">
+                                <i class="fas fa-hand-holding"></i> 申请借阅
+                            </button>
+                            <button class="btn-secondary" onclick="copyBookName()">
+                                <i class="fas fa-copy"></i> 复制书名
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-description">
+                    <h4>内容简介</h4>
+                    <p id="modal-book-description"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
