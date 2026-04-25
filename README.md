@@ -86,7 +86,7 @@ BookManagement程序/
 ## 在线访问
 
 该项目已部署到GitHub Pages，可以通过以下地址访问：
-- 在线地址：[https://yourusername.github.io/book-management-system](https://yourusername.github.io/book-management-system)
+- 在线地址：[https://liang-zhi-yi.github.io/book-management-system](https://liang-zhi-yi.github.io/book-management-system)
 
 ## 注意事项
 
