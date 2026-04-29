@@ -14,8 +14,10 @@ class DBHelper:
 
     def __init__(self):
         if not self._connection_string:
-            db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "bookmanager.db")
-            os.makedirs(os.path.dirname(db_path), exist_ok=True)
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            replit_data_dir = os.environ.get('REPLIT_DATA_DIR', os.path.join(base_dir, "data"))
+            os.makedirs(replit_data_dir, exist_ok=True)
+            db_path = os.path.join(replit_data_dir, "bookmanager.db")
             self._connection_string = db_path
 
     def get_connection(self) -> sqlite3.Connection:

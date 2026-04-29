@@ -3,7 +3,9 @@ import datetime
 import sys
 import os
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+app_dir = os.path.dirname(os.path.abspath(__file__))
+python_dir = os.path.dirname(app_dir)
+sys.path.insert(0, python_dir)
 
 from dal.db_helper import DBHelper
 from bll.user_manager import UserManager
@@ -18,7 +20,9 @@ from models.reader import Reader
 from models.reader_category import ReaderCategory
 from models.user import User
 
-app = Flask(__name__)
+template_folder = os.path.join(app_dir, 'templates')
+static_folder = os.path.join(app_dir, 'static')
+app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
 app.secret_key = 'book_management_secret_key_2024'
 app.config['JSON_AS_ASCII'] = False
 
@@ -798,8 +802,7 @@ def api_get_reader_applications(reader_id):
 
 
 if __name__ == '__main__':
-    # 打印所有注册的路由
     print('Registered routes:')
     for rule in app.url_map.iter_rules():
         print(f'{rule.rule} -> {rule.endpoint}')
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=8080)
